@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "훈민정음",
+  "version": "1.0",
+  "description": "실시간 맞춤법 및 문법 교정 확장프로그램",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "*://*.pusan.ac.kr/*",
+    "*://*.nara-speller.co.kr/*",
+    "*://*.search.naver.com/*",
+    "*://m.search.naver.com/*",
+    "*://ts-proxy.naver.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["content.css"],
+      "js": ["content.js"]
+    }
+  ],
+  "options_page": "dashboard.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

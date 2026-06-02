@@ -1,0 +1,430 @@
+/* content.css - 훈민정음 */
+
+:root {
+  --gk-primary: #8B6914;
+  --gk-primary-hover: #6B4F10;
+  --gk-bg: #FFFDF7;
+  --gk-text: #3D3630;
+  --gk-sub-text: #7A6F63;
+  --gk-border: #3D3630;
+  --gk-error-underline: #A0522D;
+  --gk-suggestion-bg: #8B6914;
+  --gk-suggestion-text: #FFFDF7;
+  --gk-panel-shadow: rgba(61, 54, 48, 0.18);
+  --gk-overlay-bg: rgba(255,253,247,0.97);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gk-primary: #C9A84C;
+    --gk-primary-hover: #D4B96A;
+    --gk-bg: #2A2520;
+    --gk-text: #F0EAE0;
+    --gk-sub-text: #A89B8C;
+    --gk-border: #F0EAE0;
+    --gk-error-underline: #D48B6A;
+    --gk-suggestion-bg: #6B4F10;
+    --gk-suggestion-text: #F0EAE0;
+    --gk-panel-shadow: rgba(0, 0, 0, 0.45);
+    --gk-overlay-bg: rgba(42,37,32,0.97);
+  }
+}
+
+/* ── Floating Button ── */
+
+#gk-floating-btn {
+  position: absolute;
+  z-index: 2147483640;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--gk-panel-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  overflow: visible;
+  user-select: none;
+}
+
+#gk-floating-btn img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+#gk-floating-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 5px 20px var(--gk-panel-shadow);
+  border-color: var(--gk-primary-hover);
+}
+
+#gk-floating-btn:active {
+  transform: scale(0.95);
+}
+
+#gk-floating-btn.has-errors {
+  animation: gk-pulse 2s infinite;
+}
+
+@keyframes gk-pulse {
+  0%, 100% { box-shadow: 0 3px 12px var(--gk-panel-shadow); }
+  50% { box-shadow: 0 3px 12px rgba(160, 82, 45, 0.35); }
+}
+
+/* Error badge */
+.gk-floating-btn-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--gk-error-underline);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* ── Overlay Panel (Speech Bubble) ── */
+
+#gk-overlay-panel {
+  position: absolute;
+  z-index: 2147483641;
+  background: var(--gk-overlay-bg);
+  border: 2px solid var(--gk-primary);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px var(--gk-panel-shadow);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  color: var(--gk-text);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: gk-bubble-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes gk-bubble-in {
+  from { opacity: 0; transform: scale(0.85) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Speech bubble tail — pointing down-right (default) */
+#gk-overlay-panel.gk-bubble-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 28px;
+  width: 0; height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--gk-primary);
+}
+#gk-overlay-panel.gk-bubble-bottom::before {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  right: 29px;
+  width: 0; height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid var(--gk-overlay-bg);
+  z-index: 1;
+}
+
+/* Tail pointing up (when panel is below button) */
+#gk-overlay-panel.gk-bubble-top::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 28px;
+  width: 0; height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--gk-primary);
+}
+#gk-overlay-panel.gk-bubble-top::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  right: 29px;
+  width: 0; height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid var(--gk-overlay-bg);
+  z-index: 1;
+}
+
+/* Panel Header */
+.gk-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--gk-border);
+  flex-shrink: 0;
+}
+
+.gk-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--gk-primary);
+}
+
+.gk-panel-title img {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.gk-panel-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--gk-sub-text);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+}
+.gk-panel-close:hover {
+  background: rgba(128,128,128,0.12);
+  color: var(--gk-text);
+}
+
+/* Panel Body */
+.gk-panel-body {
+  overflow-y: auto;
+  padding: 12px 16px;
+  flex: 1;
+}
+
+.gk-panel-body::-webkit-scrollbar { width: 5px; }
+.gk-panel-body::-webkit-scrollbar-track { background: transparent; }
+.gk-panel-body::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.25); border-radius: 3px; }
+
+/* Empty State */
+.gk-panel-empty {
+  text-align: center;
+  padding: 28px 16px;
+}
+.gk-panel-empty-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--gk-primary);
+  color: #fff;
+  font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.gk-panel-empty-text {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--gk-text);
+  margin-bottom: 4px;
+}
+.gk-panel-empty-sub {
+  color: var(--gk-sub-text);
+  font-size: 13px;
+}
+
+/* ── Suggestion Card ── */
+
+.gk-suggestion-card {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(128,128,128,0.1);
+}
+.gk-suggestion-card:last-child {
+  border-bottom: none;
+}
+
+.gk-suggestion-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gk-suggestion-type {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.gk-type-typo { background: #A0522D; }
+.gk-type-grammar { background: #6B7B3A; }
+.gk-type-spacing { background: #8B6914; }
+
+@media (prefers-color-scheme: dark) {
+  .gk-type-typo { background: #D48B6A; }
+  .gk-type-grammar { background: #94A86B; }
+  .gk-type-spacing { background: #C9A84C; }
+}
+
+.gk-suggestion-original {
+  text-decoration: line-through;
+  color: var(--gk-sub-text);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+/* Suggestion text + copy row */
+.gk-suggestion-content {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.gk-suggestion-text {
+  flex: 1;
+  background: var(--gk-suggestion-bg);
+  color: var(--gk-suggestion-text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s;
+  word-break: break-all;
+  line-height: 1.45;
+}
+.gk-suggestion-text:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+.gk-suggestion-text:active {
+  transform: translateY(0);
+}
+
+/* Copy Button */
+.gk-copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1.5px solid var(--gk-primary);
+  border-radius: 8px;
+  color: var(--gk-primary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.gk-copy-btn:hover {
+  background: var(--gk-primary);
+  color: #fff;
+}
+.gk-copy-btn.copied {
+  background: var(--gk-primary);
+  color: #fff;
+  border-color: var(--gk-primary);
+}
+
+.gk-suggestion-reason {
+  font-size: 12px;
+  color: var(--gk-sub-text);
+  line-height: 1.5;
+}
+
+/* ── Red Underline Highlights (Textarea Overlay) ── */
+
+.grammarly-kr-overlay-container {
+  position: absolute;
+  pointer-events: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: transparent !important;
+  background-color: transparent !important;
+  z-index: 1;
+}
+.grammarly-kr-overlay-container span {
+  pointer-events: auto;
+}
+
+.grammarly-kr-highlight-typo,
+.grammarly-kr-highlight-grammar,
+.grammarly-kr-highlight-spacing {
+  text-decoration: underline wavy;
+  text-decoration-color: var(--gk-error-underline);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  border-radius: 2px;
+  background-color: rgba(160, 82, 45, 0.08);
+}
+
+/* ── Context Menu Modal (kept for backward compat) ── */
+
+.grammarly-kr-context-modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 2147483645;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grammarly-kr-context-modal {
+  background: var(--gk-bg);
+  color: var(--gk-text);
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.gk-modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(128,128,128,0.2);
+}
+.gk-modal-body { padding: 20px; overflow-y: auto; }
+.gk-modal-list { list-style: none; padding: 0; margin: 0; }
+.gk-modal-item { padding: 16px 0; border-bottom: 1px solid rgba(128,128,128,0.1); }
+.gk-modal-item:last-child { border-bottom: none; }
+.gk-modal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 15px; }
+.gk-modal-type { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; }
+.gk-modal-original { text-decoration: line-through; color: var(--gk-sub-text); }
+.gk-modal-arrow { color: var(--gk-sub-text); }
+.gk-modal-suggestion { color: var(--gk-primary); font-weight: bold; }
+.gk-modal-reason { font-size: 13px; color: var(--gk-sub-text); line-height: 1.5; }
+.gk-modal-error { color: var(--gk-error-underline); text-align: center; padding: 20px; font-weight: bold; }
+.gk-modal-success { color: var(--gk-primary); text-align: center; padding: 20px; font-weight: bold; }

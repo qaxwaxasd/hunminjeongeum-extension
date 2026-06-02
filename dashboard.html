@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>훈민정음 - Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="chart.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <img src="icons/icon48.png" alt="Logo" width="32" height="32">
+      <h2>훈민정음</h2>
+    </div>
+    <ul class="nav">
+      <li class="active"><a href="#stats">통계 대시보드</a></li>
+      <li><a href="#settings">설정 (제외 도메인)</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <section id="stats">
+      <h1>교정 통계</h1>
+      <div class="stats-grid">
+        <div class="stat-card typo-card">
+          <h3>오타 교정</h3>
+          <div class="value" id="total-typo">0</div>
+        </div>
+        <div class="stat-card grammar-card">
+          <h3>문법 교정</h3>
+          <div class="value" id="total-grammar">0</div>
+        </div>
+        <div class="stat-card spacing-card">
+          <h3>띄어쓰기</h3>
+          <div class="value" id="total-spacing">0</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="statsChart"></canvas>
+      </div>
+    </section>
+
+    <section id="history">
+      <h1>최근 교정 내역</h1>
+      <div class="settings-card">
+        <ul id="history-list" class="domain-list">
+          <!-- History will be populated here -->
+          <li class="domain-item" style="color: var(--text-muted);">교정 내역이 없습니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="settings">
+      <h1>서비스 설정</h1>
+      
+      <div class="settings-card">
+        <h3>검사 제외 도메인 관리</h3>
+        <p>코딩 사이트나 사내망 등 맞춤법 검사가 필요 없는 도메인을 등록하세요.</p>
+        
+        <div class="input-group">
+          <input type="text" id="domain-input" placeholder="예: github.com">
+          <button id="add-domain-btn" class="btn btn-primary">추가</button>
+        </div>
+        
+        <ul id="domain-list" class="domain-list">
+          <!-- Domains will be populated here -->
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
