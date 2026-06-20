@@ -11,11 +11,7 @@
   ],
   "host_permissions": [
     "<all_urls>",
-    "*://*.pusan.ac.kr/*",
-    "*://*.nara-speller.co.kr/*",
-    "*://*.search.naver.com/*",
-    "*://m.search.naver.com/*",
-    "*://ts-proxy.naver.com/*"
+    "*://generativelanguage.googleapis.com/*"
   ],
   "background": {
     "service_worker": "background.js"

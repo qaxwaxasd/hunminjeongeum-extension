@@ -1,5 +1,3 @@
-// dashboard.js
-
 document.addEventListener('DOMContentLoaded', () => {
   // Navigation
   const navLinks = document.querySelectorAll('.nav a');
@@ -11,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Load Data
-  chrome.storage.local.get(['stats', 'excludedDomains', 'correctionHistory'], (result) => {
+  chrome.storage.local.get(['stats', 'excludedDomains', 'correctionHistory', 'geminiApiKey'], (result) => {
     const stats = result.stats || { typo: 0, grammar: 0, spacing: 0 };
     const domains = result.excludedDomains || [];
     const history = result.correctionHistory || [];
@@ -24,7 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderChart(stats);
     renderDomains(domains);
     renderHistory(history);
+
+    // 엔진 상태 표시 제거됨 (항상 Naver 사용)
   });
+
+  // API 키 관리는 네이버 API 전환으로 삭제됨
 
   // Domain Management
   const domainInput = document.getElementById('domain-input');
@@ -46,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
 
 function renderDomains(domains) {
   const list = document.getElementById('domain-list');

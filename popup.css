@@ -179,3 +179,69 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* Loading Spinner */
+.loading-spinner {
+  animation: rotate 2s linear infinite;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.loading-spinner .path {
+  stroke: var(--primary);
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+/* Engine Status */
+.engine-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--text-color);
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.engine-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.engine-dot.connected {
+  background-color: #52C41A;
+  box-shadow: 0 0 4px rgba(82, 196, 26, 0.5);
+}
+
+.engine-dot.disconnected {
+  background-color: #A0522D;
+}

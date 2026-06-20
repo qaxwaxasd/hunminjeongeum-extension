@@ -7,15 +7,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const statSpacing = document.getElementById('stat-spacing');
   const copyBtn = document.getElementById('copy-all-btn');
   const dashboardBtn = document.getElementById('open-dashboard-btn');
+  const loadingSpinner = document.getElementById('loading-spinner');
 
   // Load state
-  chrome.storage.local.get(['enabled', 'stats'], (result) => {
+  chrome.storage.local.get(['enabled', 'stats', 'isDetecting'], (result) => {
     toggleInput.checked = result.enabled !== false;
     
     if (result.stats) {
       statTypo.textContent = result.stats.typo || 0;
       statGrammar.textContent = result.stats.grammar || 0;
       statSpacing.textContent = result.stats.spacing || 0;
+    }
+
+    if (loadingSpinner) {
+      loadingSpinner.style.display = result.isDetecting ? 'inline-block' : 'none';
+    }
+
+    // 엔진 상태 표시
+    const engineDot = document.getElementById('engine-dot');
+    const engineText = document.getElementById('engine-text');
+    engineDot.className = 'engine-dot connected';
+    engineText.textContent = 'Naver API 연결됨';
+  });
+
+  // Listen for storage changes
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === 'local' && changes.isDetecting !== undefined) {
+      if (loadingSpinner) {
+        loadingSpinner.style.display = changes.isDetecting.newValue ? 'inline-block' : 'none';
+      }
     }
   });
 

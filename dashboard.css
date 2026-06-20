@@ -269,3 +269,132 @@ h1 {
   font-size: 12px;
   color: var(--text-muted);
 }
+
+/* ── API Key 설정 스타일 ── */
+
+.api-key-card h3 {
+  margin-top: 0;
+}
+
+.api-key-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.link-external {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-external:hover {
+  text-decoration: underline;
+}
+
+.api-key-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-dot.connected {
+  background-color: #52C41A;
+  box-shadow: 0 0 6px rgba(82, 196, 26, 0.5);
+  animation: pulse-green 2s infinite;
+}
+
+.status-dot.disconnected {
+  background-color: var(--text-muted);
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 6px rgba(82, 196, 26, 0.5); }
+  50% { box-shadow: 0 0 12px rgba(82, 196, 26, 0.8); }
+}
+
+.api-key-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.btn-text:hover {
+  color: var(--primary);
+}
+
+.btn-text.btn-danger:hover {
+  color: var(--error-typo);
+}
+
+.btn-secondary {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border-color);
+}
+
+.api-test-result {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  animation: fadeIn 0.3s ease;
+}
+
+.api-test-success {
+  background-color: rgba(82, 196, 26, 0.1);
+  color: #52C41A;
+  border: 1px solid rgba(82, 196, 26, 0.3);
+}
+
+.api-test-error {
+  background-color: rgba(160, 82, 45, 0.1);
+  color: var(--error-typo);
+  border: 1px solid rgba(160, 82, 45, 0.3);
+}
+
+.api-test-warning {
+  background-color: rgba(201, 168, 76, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+}
+
+.api-test-info {
+  background-color: rgba(139, 105, 20, 0.05);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

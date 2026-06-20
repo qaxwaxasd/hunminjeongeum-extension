@@ -11,11 +11,19 @@
     <div class="logo">
       <img src="icons/icon48.png" alt="Logo" width="24" height="24">
       <span>훈민정음</span>
+      <svg class="loading-spinner" id="loading-spinner" viewBox="0 0 50 50" style="display: none;">
+        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+      </svg>
     </div>
     <label class="switch">
       <input type="checkbox" id="toggle-service" checked>
       <span class="slider round"></span>
     </label>
+  </div>
+
+  <div class="engine-status" id="engine-status">
+    <span class="engine-dot" id="engine-dot"></span>
+    <span id="engine-text">확인 중...</span>
   </div>
 
   <div class="content">

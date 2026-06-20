@@ -44,6 +44,21 @@ function initGrammarlyKR() {
   document.addEventListener('input', handleInput, true);
   document.addEventListener('scroll', repositionAll, true);
   window.addEventListener('resize', repositionAll);
+  
+  // 페이지 로드 시 기존 텍스트(적은 글) 즉시 감지
+  checkAllExistingElements();
+}
+
+function checkAllExistingElements() {
+  const elements = document.querySelectorAll('textarea, input, [contenteditable="true"]');
+  elements.forEach(el => {
+    if (isEditableElement(el) && el.type !== 'password') {
+      const text = getTextFromElement(el);
+      if (text.trim().length > 3) {
+        triggerCheck(el);
+      }
+    }
+  });
 }
 
 function disableGrammarlyKR() {
@@ -181,6 +196,11 @@ function handleFocusIn(e) {
   activeElement = el;
   positionFloatingButton(el);
 
+  // 캐싱된 오류 복원
+  currentErrors = el.gkErrors || [];
+  updateBadge();
+  if (isOverlayOpen) updateOverlayContent();
+
   const text = getTextFromElement(el);
   if (text.trim().length > 3) {
     triggerCheck(el);
@@ -225,10 +245,13 @@ function repositionAll() {
 function triggerCheck(element) {
   const text = getTextFromElement(element);
   if (!text.trim()) {
-    currentErrors = [];
-    updateBadge();
+    element.gkErrors = [];
+    if (activeElement === element) {
+      currentErrors = [];
+      updateBadge();
+      if (isOverlayOpen) updateOverlayContent();
+    }
     removeHighlightsFor(element);
-    if (isOverlayOpen) updateOverlayContent();
     return;
   }
 
@@ -237,10 +260,19 @@ function triggerCheck(element) {
       console.error('[훈민정음]', chrome.runtime.lastError);
       return;
     }
-    currentErrors = (response && response.results) ? response.results : [];
-    updateBadge();
-    applyHighlights(element, text, currentErrors);
-    if (isOverlayOpen) updateOverlayContent();
+    const results = (response && response.results) ? response.results : [];
+    
+    // 개별 엘리먼트에 오류 캐싱
+    element.gkErrors = results;
+    
+    // 현재 포커스된 엘리먼트일 경우에만 전역 오류 및 UI 동기화
+    if (activeElement === element) {
+      currentErrors = results;
+      updateBadge();
+      if (isOverlayOpen) updateOverlayContent();
+    }
+    
+    applyHighlights(element, text, results);
   });
 }
 
@@ -412,6 +444,9 @@ function applySuggestion(index) {
   });
 
   currentErrors.splice(index, 1);
+  if (activeElement) {
+    activeElement.gkErrors = currentErrors;
+  }
   updateBadge();
   updateOverlayContent();
 }
